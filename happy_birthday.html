@@ -262,12 +262,39 @@
     transform: scale(1.05);
   }
 </style>
-<button class="cute-button" onclick="document.getElementById('birthday-audio').play()">play</button>
-<audio controls="" id="birthday-audio" loop="" style="display: block; margin: 30px auto;">
+<audio autoplay="autoplay" controls="" id="birthday-audio" loop="" style="display: block; margin: 30px auto;">
 <source src="three_man_down_love_song.mp3" type="audio/mp3"/>
 </audio><script>
 document.getElementById("play-music-btn").addEventListener("click", function() {
   var audio = document.getElementById("birthday-audio");
   audio.play();
 });
+</script><script>
+const lines = document.querySelectorAll('.scrolling-text .line');
+let lineIndex = 0;
+let charDelay = 3000;
+
+function animateLineSequentially(line) {
+  const chars = line.querySelectorAll('.char');
+  chars.forEach(c => c.classList.remove('on'));
+  chars.forEach((char, i) => {
+    setTimeout(() => char.classList.add('on'), i * charDelay);
+  });
+}
+
+function loopPerLine() {
+  lines.forEach((line, i) => {
+    const chars = line.querySelectorAll('.char');
+    chars.forEach(c => c.classList.remove('on'));
+  });
+
+  animateLineSequentially(lines[lineIndex]);
+
+  // ไปบรรทัดถัดไปเมื่อครบทุกตัว
+  const totalTime = lines[lineIndex].querySelectorAll('.char').length * charDelay;
+  lineIndex = (lineIndex + 1) % lines.length;
+  setTimeout(loopPerLine, totalTime);
+}
+
+loopPerLine();
 </script></body></html>
